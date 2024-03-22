@@ -80,15 +80,6 @@
     </item>
     
     <item>
-      <title>HTTP状态码</title>
-      <link>http://qstudy.tech/archives/213/</link>
-      <pubDate>Sat, 21 Dec 2019 03:10:58 +0000</pubDate>
-      
-      <guid>http://qstudy.tech/archives/213/</guid>
-      <description>面试经常会被问道了解http状态码吗？你知道301和302什么区别，401和403什么区别，502和503什么区别？ HTTP 响应状态代码指示特定 HTTP 请求是否已成功完成。响应分为五类：信息响应(100–199)，成功响应(200–299)，重定向(300–399)，客户端错误(400–49</description>
-    </item>
-    
-    <item>
       <title>linux系统进程状态有哪些？</title>
       <link>http://qstudy.tech/archives/210/</link>
       <pubDate>Mon, 18 Nov 2019 15:47:07 +0000</pubDate>
@@ -292,15 +283,6 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>hello,go</title>
-      <link>http://qstudy.tech/archives/38/</link>
-      <pubDate>Thu, 21 Mar 2019 14:22:00 +0000</pubDate>
-      
-      <guid>http://qstudy.tech/archives/38/</guid>
-      <description>hello,go</description>
     </item>
     
     <item>
