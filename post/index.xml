@@ -62,15 +62,6 @@
     </item>
     
     <item>
-      <title>Mytest</title>
-      <link>http://qstudy.tech/2021/01/08/</link>
-      <pubDate>Fri, 08 Jan 2021 01:08:22 +0800</pubDate>
-      
-      <guid>http://qstudy.tech/2021/01/08/</guid>
-      <description>this my test zhege ge zhende sh markdown练习 插入代码 1 2 3 4 package main func main(){ fmt.Println(&amp;#34;hello world&amp;#34;) } hello word ###插入图片</description>
-    </item>
-    
-    <item>
       <title>再来学习一下tcp</title>
       <link>http://qstudy.tech/archives/221/</link>
       <pubDate>Sat, 02 May 2020 10:48:57 +0000</pubDate>
