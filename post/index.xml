@@ -719,14 +719,14 @@
 &lt;h4 id="下面这些问题是不是经常遇到"&gt;下面这些问题，是不是经常遇到？&lt;/h4&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;tcp三次握手，四次挥手&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;tcp三次握手，四次挥手&lt;/p&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;time_wait,close_wait出现在哪个过程&lt;/p&gt;</description></item><item><title>linux系统进程状态有哪些？</title><link>http://dlgde.github.io/archives/210/</link><pubDate>Mon, 18 Nov 2019 15:47:07 +0000</pubDate><guid>http://dlgde.github.io/archives/210/</guid><description>&lt;h2 id="进程状态有哪些"&gt;进程状态有哪些？&lt;/h2&gt;
 &lt;p&gt;在学校的操作系统原理中，我们系统中的进程有多种状态，那对应到常用的linux系统，有哪些进程状态呢？通过top可看到有以下的状态：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;R&lt;/strong&gt; 是 Running 或 Runnable 的缩写，表示进程在 CPU 的就绪队列中，正在运行或者正在等待运行。&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;R&lt;/strong&gt; 是 Running 或 Runnable 的缩写，表示进程在 CPU 的就绪队列中，正在运行或者正在等待运行。&lt;/p&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;D&lt;/strong&gt; 是 Disk Sleep 的缩写，也就是不可中断状态睡眠（Uninterruptible Sleep），一般表示进程正在跟硬件交互，并且交互过程不允许被其他进程或中断打断。&lt;/p&gt;</description></item><item><title>理解平均负载和CPU使用率</title><link>http://dlgde.github.io/archives/209/</link><pubDate>Sun, 17 Nov 2019 03:00:00 +0000</pubDate><guid>http://dlgde.github.io/archives/209/</guid><description>&lt;h2 id="平均负载"&gt;平均负载&lt;/h2&gt;
@@ -740,10 +740,7 @@
 &lt;li&gt;而在只有 1 个 CPU 的系统中，则意味着有一半的进程竞争不到 CPU。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;一般来说，&lt;strong&gt;当平均负载高于 CPU 数量 70% 的时候&lt;/strong&gt;，就应该分析排查负载高的问题;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="平均负载和cpu使用率"&gt;平均负载和CPU使用率&lt;/h2&gt;
-&lt;p&gt;平均负载是指单位时间内，处于可运行状态和不可中断状态的进程数。所以，它不仅包括了&lt;strong&gt;正在使用 CPU&lt;/strong&gt; 的进程，还包括&lt;strong&gt;等待 CPU&lt;/strong&gt; 和&lt;strong&gt;等待 I/O&lt;/strong&gt; 的进程。而 CPU 使用率，是单位时间内 CPU 繁忙情况的统计，跟平均负载并不一定完全对应。比如：&lt;/p&gt;</description></item><item><title>理解Linux中的buffer和cache</title><link>http://dlgde.github.io/archives/208/</link><pubDate>Sat, 16 Nov 2019 11:12:14 +0000</pubDate><guid>http://dlgde.github.io/archives/208/</guid><description>&lt;h2 id="磁盘和文件的区别"&gt;磁盘和文件的区别：&lt;/h2&gt;
+&lt;li&gt;一般来说，&lt;strong&gt;当平均负载高于 CPU 数量 70% 的时候&lt;/strong&gt;，就应该分析排查负载高的问题;&lt;/p&gt;</description></item><item><title>理解Linux中的buffer和cache</title><link>http://dlgde.github.io/archives/208/</link><pubDate>Sat, 16 Nov 2019 11:12:14 +0000</pubDate><guid>http://dlgde.github.io/archives/208/</guid><description>&lt;h2 id="磁盘和文件的区别"&gt;磁盘和文件的区别：&lt;/h2&gt;
 &lt;p&gt;关于磁盘和文件的区别，本来以为大家都懂了，所以没有细讲。&lt;strong&gt;磁盘是一个块设备，可以划分为不同的分区；在分区之上再创建文件系统，挂载到某个目录，之后才可以在这个目录中读写文件&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;其实 Linux 中“一切皆文件”，而文章中提到的“文件”是普通文件，磁盘是块设备文件，这些大家可以执行 &amp;ldquo;ls -l &amp;lt;路径&amp;gt;&amp;rdquo; 查看它们的区别（输出的含义如果不懂请 man ls 查询）。&lt;/p&gt;</description></item><item><title>golang中的map</title><link>http://dlgde.github.io/archives/207/</link><pubDate>Sat, 16 Nov 2019 06:09:14 +0000</pubDate><guid>http://dlgde.github.io/archives/207/</guid><description>&lt;h2 id="golang中map学习"&gt;golang中map学习&lt;/h2&gt;
 &lt;h3 id="哈希表"&gt;哈希表&lt;/h3&gt;
@@ -850,7 +847,7 @@
 &lt;li&gt;用git push 提交到远程的仓库。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;其实就是工作区——git add——&amp;gt;暂存区——git commit——&amp;gt;HEAD&lt;/p&gt;</description></item><item><title>第一次参与github开源教程</title><link>http://dlgde.github.io/archives/161/</link><pubDate>Wed, 08 May 2019 15:40:02 +0000</pubDate><guid>http://dlgde.github.io/archives/161/</guid><description>&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;参照https://github.com/Dlgde/first-contributions/blob/master/translations/README.chs.md&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description></item><item><title>go实现单链表反转</title><link>http://dlgde.github.io/archives/157/</link><pubDate>Wed, 24 Apr 2019 14:54:59 +0000</pubDate><guid>http://dlgde.github.io/archives/157/</guid><description>&lt;h3 id="单链表核心代码如下"&gt;单链表核心代码如下：&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/Dlgde/first-contributions/blob/master/translations/README.chs.md" target="_blank" rel="nofollow" &gt;参照https://github.com/Dlgde/first-contributions/blob/master/translations/README.chs.md&lt;/a&gt;&lt;/p&gt;</description></item><item><title>go实现单链表反转</title><link>http://dlgde.github.io/archives/157/</link><pubDate>Wed, 24 Apr 2019 14:54:59 +0000</pubDate><guid>http://dlgde.github.io/archives/157/</guid><description>&lt;h3 id="单链表核心代码如下"&gt;单链表核心代码如下：&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;1.迭代方法：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;
 &lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;

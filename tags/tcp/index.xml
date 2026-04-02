@@ -3,7 +3,7 @@
 &lt;h4 id="下面这些问题是不是经常遇到"&gt;下面这些问题，是不是经常遇到？&lt;/h4&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;tcp三次握手，四次挥手&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;tcp三次握手，四次挥手&lt;/p&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;time_wait,close_wait出现在哪个过程&lt;/p&gt;</description></item></channel></rss>
