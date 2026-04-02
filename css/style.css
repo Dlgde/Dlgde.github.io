@@ -106,23 +106,33 @@ pre {
     overflow:auto;
     border: 1px solid #ddd;
     display: block;
-    white-space: pre-wrap;
-    word-wrap: break-word;
 }
 
 /* 代码行号对齐修复 */
 .highlighttable {
-    table-layout: fixed;
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+.highlighttable tr {
+    display: flex;
 }
 .highlighttable td.lineno {
-    width: 40px;
-    padding-right: 10px;
+    flex-shrink: 0;
+    width: 50px;
+    padding: 0 10px 0 5px;
     text-align: right;
     color: #999;
     border-right: 1px solid #ddd;
+    user-select: none;
+    background: #f8f8f8;
 }
 .highlighttable td.code {
+    flex: 1;
     padding-left: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 code {
     display: inline-block;
