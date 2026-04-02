@@ -1,504 +1,174 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
-
-    <title>go语言实现通用链表 | Qstudy的博客</title>
-    <meta property="og:title" content="go语言实现通用链表 - Qstudy的博客">
-    <meta property="og:type" content="article">
-    
-    <meta property="article:published_time" content='2019-03-24T18:43:15&#43;08:00'>
-    
-    
-    <meta property="article:modified_time" content='2019-03-24T18:43:15&#43;08:00'>
-    
-    <meta name="Keywords" content="golang,go语言,go语言笔记,linux,网站架构,算法，分布式，运维，docker，kubernetes，k8s，nginx等">
-    <meta name="description" content="go语言实现通用链表">
-    <meta name="author" content="qstudy">
-    
-    <meta property="og:url" content="http://dlgde.github.io/archives/81/">
-    <link rel="shortcut icon" href='/favicon.ico' type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-
-    
-
-    
-    
-    <link rel="stylesheet" href='/css/douban.css'>
-    
-    <link rel="stylesheet" href='/css/other.css'>
-    
-</head>
-
-<body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="http://dlgde.github.io">
-                        Qstudy的博客
-                    </a>
-                
-                <p class="description">记录个人学习空间</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="http://dlgde.github.io">首页</a>
-                    
-                    <a  href="http://dlgde.github.io/read/" title="读书">读书</a>
-                    
-                    <a  href="http://dlgde.github.io/archives/" title="归档">归档</a>
-                    
-                    <a  href="http://dlgde.github.io/about/" title="关于">关于</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">go语言实现通用链表</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月24日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/golang'>golang</a></span>
-            
-        </div>
-        
-        
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
-        </div>
-        
-        
-        <div class="post-content">
-            <p>实现通用链表</p>
-<ol>
-<li>link.go</li>
-</ol>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">package</span> main
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#d14">&#34;fmt&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">type</span> LinkNode <span style="color:#000;font-weight:bold">struct</span> {
-</span></span><span style="display:flex;"><span>	data <span style="color:#000;font-weight:bold">interface</span>{}
-</span></span><span style="display:flex;"><span>	next <span style="color:#000;font-weight:bold">*</span>LinkNode
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">type</span> Link <span style="color:#000;font-weight:bold">struct</span> {
-</span></span><span style="display:flex;"><span>	head <span style="color:#000;font-weight:bold">*</span>LinkNode
-</span></span><span style="display:flex;"><span>	tail <span style="color:#000;font-weight:bold">*</span>LinkNode
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (p <span style="color:#000;font-weight:bold">*</span>Link) <span style="color:#900;font-weight:bold">InsertHead</span>(data <span style="color:#000;font-weight:bold">interface</span>{}) {
-</span></span><span style="display:flex;"><span>	node <span style="color:#000;font-weight:bold">:=</span> <span style="color:#000;font-weight:bold">&amp;</span>LinkNode{
-</span></span><span style="display:flex;"><span>		data: data,
-</span></span><span style="display:flex;"><span>		next: <span style="color:#000;font-weight:bold">nil</span>,
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">if</span> p.tail <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> p.head <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">nil</span> {
-</span></span><span style="display:flex;"><span>		p.head = node
-</span></span><span style="display:flex;"><span>		p.tail = node
-</span></span><span style="display:flex;"><span>		<span style="color:#000;font-weight:bold">return</span>
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>	node.next = p.head
-</span></span><span style="display:flex;"><span>	p.head = node
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (p <span style="color:#000;font-weight:bold">*</span>Link) <span style="color:#900;font-weight:bold">InsertTail</span>(data <span style="color:#000;font-weight:bold">interface</span>{}) {
-</span></span><span style="display:flex;"><span>	node <span style="color:#000;font-weight:bold">:=</span> <span style="color:#000;font-weight:bold">&amp;</span>LinkNode{
-</span></span><span style="display:flex;"><span>		data: data,
-</span></span><span style="display:flex;"><span>		next: <span style="color:#000;font-weight:bold">nil</span>,
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">if</span> p.tail <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> p.head <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">nil</span> {
-</span></span><span style="display:flex;"><span>		p.head = node
-</span></span><span style="display:flex;"><span>		p.tail = node
-</span></span><span style="display:flex;"><span>		<span style="color:#000;font-weight:bold">return</span>
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>	p.tail.next = node
-</span></span><span style="display:flex;"><span>	p.tail = node
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (p <span style="color:#000;font-weight:bold">*</span>Link) <span style="color:#900;font-weight:bold">Trans</span>() {
-</span></span><span style="display:flex;"><span>	q <span style="color:#000;font-weight:bold">:=</span> p.head
-</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">for</span> q <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
-</span></span><span style="display:flex;"><span>		fmt.<span style="color:#900;font-weight:bold">Println</span>(q.data)
-</span></span><span style="display:flex;"><span>		q = q.next
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (p <span style="color:#000;font-weight:bold">*</span>Link) <span style="color:#900;font-weight:bold">Getlen</span>() {
-</span></span><span style="display:flex;"><span>	q <span style="color:#000;font-weight:bold">:=</span> p.head
-</span></span><span style="display:flex;"><span>	m <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">for</span> q <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
-</span></span><span style="display:flex;"><span>		m<span style="color:#000;font-weight:bold">++</span>
-</span></span><span style="display:flex;"><span>		q = q.next
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>	fmt.<span style="color:#900;font-weight:bold">Println</span>(m)
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="2">
-<li>main.go</li>
-</ol>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">package</span> main
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
-</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">var</span> l Link
-</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">1</span>; i <span style="color:#000;font-weight:bold">&amp;</span>lt; <span style="color:#099">10</span>; i<span style="color:#000;font-weight:bold">++</span> {
-</span></span><span style="display:flex;"><span>		l.<span style="color:#900;font-weight:bold">InsertTail</span>(i)
-</span></span><span style="display:flex;"><span>		<span style="color:#998;font-style:italic">//l.InsertHead(i)
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>		<span style="color:#998;font-style:italic">//l.InsertTail(fmt.Sprintf(&#34;str %d&#34;, i))
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	l.<span style="color:#900;font-weight:bold">Trans</span>()
-</span></span><span style="display:flex;"><span>	l.<span style="color:#900;font-weight:bold">Getlen</span>()
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
-        </div>
-
-        
-
-
-        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/archives/58/">go语言接口实现应用-Sort接口</a></li>
-        
-        <li><a href="/archives/33/">生活，如此多娇</a></li>
-        
-        <li><a href="/about/">关于</a></li>
-        
-        <li><a href="/archives/">归档</a></li>
-        
-        <li><a href="/search/">搜索</a></li>
-        
-    </ul>
-</div>
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "Dlgde/blog-issues"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2024 <a href="http://dlgde.github.io">Qstudy的博客 By Qstudy</a>
-        
-    </div>
-    <br />
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
-    <script src='/js/douban.js'></script>
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='http://dlgde.github.io/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="http://dlgde.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="http://dlgde.github.io/post/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E5%B9%B4/" title="又是新的一年">又是新的一年</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/2021/11/26/" title="First_beego">First_beego</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/2021/10/10/" title="关于择偶">关于择偶</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/2021/06/05/" title="移除链表元素">移除链表元素</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/2021/04/08/" title="Nginx日志统计">Nginx日志统计</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/post/fibonacci/" title="Fibonacci">Fibonacci</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/archives/221/" title="再来学习一下tcp">再来学习一下tcp</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/archives/210/" title="linux系统进程状态有哪些？">linux系统进程状态有哪些？</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/archives/209/" title="理解平均负载和CPU使用率">理解平均负载和CPU使用率</a>
-    </li>
-    
-    <li>
-        <a href="http://dlgde.github.io/archives/208/" title="理解Linux中的buffer和cache">理解Linux中的buffer和cache</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="http://dlgde.github.io/categories/Git/">Git (2)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/Network/">Network (1)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/golang/">golang (13)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/leetcode/">leetcode (1)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/linux/">linux (3)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/shell/">shell (1)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/web/">web (1)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类 (1)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/">生活感悟 (1)</a></li>
-    
-    <li><a href="http://dlgde.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (2)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="http://dlgde.github.io/tags/LeetCode/">LeetCode</a>
-    
-    <a href="http://dlgde.github.io/tags/beego/">beego</a>
-    
-    <a href="http://dlgde.github.io/tags/buffer%E5%92%8Ccash/">buffer和cash</a>
-    
-    <a href="http://dlgde.github.io/tags/goroute/">goroute</a>
-    
-    <a href="http://dlgde.github.io/tags/go%E5%AE%9E%E7%8E%B0socket%E7%BC%96%E7%A8%8B/">go实现socket编程</a>
-    
-    <a href="http://dlgde.github.io/tags/go%E5%BC%82%E5%B8%B8/">go异常</a>
-    
-    <a href="http://dlgde.github.io/tags/nginx/">nginx</a>
-    
-    <a href="http://dlgde.github.io/tags/rpc/">rpc</a>
-    
-    <a href="http://dlgde.github.io/tags/tcp/">tcp</a>
-    
-    <a href="http://dlgde.github.io/tags/%E5%8D%95%E9%93%BE%E8%A1%A8%E5%8F%8D%E8%BD%AC/">单链表反转</a>
-    
-    <a href="http://dlgde.github.io/tags/%E6%89%BE%E5%AF%B9%E8%B1%A1/">找对象</a>
-    
-    <a href="http://dlgde.github.io/tags/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/">生活感悟</a>
-    
-    <a href="http://dlgde.github.io/tags/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">选择排序</a>
-    
-</div>
-    </section>
-
-    
-<section class="widget">
-    <h3 class="widget-title">友情链接</h3>
-    <ul class="widget-list">
-        
-        <li>
-            <a target="_blank" href="" title=""></a>
-        </li>
-        
-    </ul>
-</section>
-
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="http://dlgde.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
-            </div>
-        </div>
-    </div>
-</body>
-
-</html>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=referrer content="no-referrer-when-downgrade"><title>go语言实现通用链表 | Qstudy的博客</title><meta property="og:title" content="go语言实现通用链表 - Qstudy的博客"><meta property="og:type" content="article"><meta property="article:published_time" content='2019-03-24T18:43:15+08:00'><meta property="article:modified_time" content='2019-03-24T18:43:15+08:00'><meta name=Keywords content="golang,go语言,go语言笔记,linux,网站架构,算法，分布式，运维，docker，kubernetes，k8s，nginx等"><meta name=description content="go语言实现通用链表"><meta name=author content="qstudy"><meta property="og:url" content="http://dlgde.github.io/archives/81/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script><link rel=stylesheet href=/css/douban.css><link rel=stylesheet href=/css/other.css></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=http://dlgde.github.io/>Qstudy的博客</a><p class=description>记录个人学习空间</p></div><div><nav id=nav-menu class=clearfix><a class=current href=http://dlgde.github.io/>首页</a>
+<a href=http://dlgde.github.io/read/ title=读书>读书</a>
+<a href=http://dlgde.github.io/archives/ title=归档>归档</a>
+<a href=http://dlgde.github.io/about/ title=关于>关于</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>go语言实现通用链表</h1></header><date class="post-meta meta-date">2019年3月24日</date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/categories/golang>golang</a></span></div><div class=post-meta><span id=busuanzi_container_page_pv>|<span id=busuanzi_value_page_pv></span><span>
+阅读</span></span></div><div class=post-content><p>实现通用链表</p><ol><li>link.go</li></ol><div class=highlight><div style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">63
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#cf222e>package</span><span style=color:#fff> </span><span style=color:#1f2328>main</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#cf222e>import</span><span style=color:#fff> </span><span style=color:#0a3069>&#34;fmt&#34;</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#cf222e>type</span><span style=color:#fff> </span><span style=color:#1f2328>LinkNode</span><span style=color:#fff> </span><span style=color:#cf222e>struct</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>data</span><span style=color:#fff> </span><span style=color:#cf222e>interface</span><span style=color:#1f2328>{}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>next</span><span style=color:#fff> </span><span style=color:#0550ae>*</span><span style=color:#1f2328>LinkNode</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#cf222e>type</span><span style=color:#fff> </span><span style=color:#1f2328>Link</span><span style=color:#fff> </span><span style=color:#cf222e>struct</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>head</span><span style=color:#fff> </span><span style=color:#0550ae>*</span><span style=color:#1f2328>LinkNode</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>tail</span><span style=color:#fff> </span><span style=color:#0550ae>*</span><span style=color:#1f2328>LinkNode</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#cf222e>func</span><span style=color:#fff> </span><span style=color:#1f2328>(</span><span style=color:#1f2328>p</span><span style=color:#fff> </span><span style=color:#0550ae>*</span><span style=color:#1f2328>Link</span><span style=color:#1f2328>)</span><span style=color:#fff> </span><span style=color:#6639ba>InsertHead</span><span style=color:#1f2328>(</span><span style=color:#1f2328>data</span><span style=color:#fff> </span><span style=color:#cf222e>interface</span><span style=color:#1f2328>{})</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>node</span><span style=color:#fff> </span><span style=color:#0550ae>:=</span><span style=color:#fff> </span><span style=color:#0550ae>&amp;</span><span style=color:#1f2328>LinkNode</span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>data</span><span style=color:#1f2328>:</span><span style=color:#fff> </span><span style=color:#1f2328>data</span><span style=color:#1f2328>,</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>next</span><span style=color:#1f2328>:</span><span style=color:#fff> </span><span style=color:#cf222e>nil</span><span style=color:#1f2328>,</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#cf222e>if</span><span style=color:#fff> </span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>tail</span><span style=color:#fff> </span><span style=color:#0550ae>==</span><span style=color:#fff> </span><span style=color:#cf222e>nil</span><span style=color:#fff> </span><span style=color:#0550ae>&amp;&amp;</span><span style=color:#fff> </span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>head</span><span style=color:#fff> </span><span style=color:#0550ae>==</span><span style=color:#fff> </span><span style=color:#cf222e>nil</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>head</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>node</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>tail</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>node</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#cf222e>return</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>node</span><span style=color:#1f2328>.</span><span style=color:#1f2328>next</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>head</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>head</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>node</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#cf222e>func</span><span style=color:#fff> </span><span style=color:#1f2328>(</span><span style=color:#1f2328>p</span><span style=color:#fff> </span><span style=color:#0550ae>*</span><span style=color:#1f2328>Link</span><span style=color:#1f2328>)</span><span style=color:#fff> </span><span style=color:#6639ba>InsertTail</span><span style=color:#1f2328>(</span><span style=color:#1f2328>data</span><span style=color:#fff> </span><span style=color:#cf222e>interface</span><span style=color:#1f2328>{})</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>node</span><span style=color:#fff> </span><span style=color:#0550ae>:=</span><span style=color:#fff> </span><span style=color:#0550ae>&amp;</span><span style=color:#1f2328>LinkNode</span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>data</span><span style=color:#1f2328>:</span><span style=color:#fff> </span><span style=color:#1f2328>data</span><span style=color:#1f2328>,</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>next</span><span style=color:#1f2328>:</span><span style=color:#fff> </span><span style=color:#cf222e>nil</span><span style=color:#1f2328>,</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#cf222e>if</span><span style=color:#fff> </span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>tail</span><span style=color:#fff> </span><span style=color:#0550ae>==</span><span style=color:#fff> </span><span style=color:#cf222e>nil</span><span style=color:#fff> </span><span style=color:#0550ae>&amp;&amp;</span><span style=color:#fff> </span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>head</span><span style=color:#fff> </span><span style=color:#0550ae>==</span><span style=color:#fff> </span><span style=color:#cf222e>nil</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>head</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>node</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>tail</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>node</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#cf222e>return</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>tail</span><span style=color:#1f2328>.</span><span style=color:#1f2328>next</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>node</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>tail</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>node</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#cf222e>func</span><span style=color:#fff> </span><span style=color:#1f2328>(</span><span style=color:#1f2328>p</span><span style=color:#fff> </span><span style=color:#0550ae>*</span><span style=color:#1f2328>Link</span><span style=color:#1f2328>)</span><span style=color:#fff> </span><span style=color:#6639ba>Trans</span><span style=color:#1f2328>()</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>q</span><span style=color:#fff> </span><span style=color:#0550ae>:=</span><span style=color:#fff> </span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>head</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#cf222e>for</span><span style=color:#fff> </span><span style=color:#1f2328>q</span><span style=color:#fff> </span><span style=color:#0550ae>!=</span><span style=color:#fff> </span><span style=color:#cf222e>nil</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>fmt</span><span style=color:#1f2328>.</span><span style=color:#6639ba>Println</span><span style=color:#1f2328>(</span><span style=color:#1f2328>q</span><span style=color:#1f2328>.</span><span style=color:#1f2328>data</span><span style=color:#1f2328>)</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>q</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>q</span><span style=color:#1f2328>.</span><span style=color:#1f2328>next</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#cf222e>func</span><span style=color:#fff> </span><span style=color:#1f2328>(</span><span style=color:#1f2328>p</span><span style=color:#fff> </span><span style=color:#0550ae>*</span><span style=color:#1f2328>Link</span><span style=color:#1f2328>)</span><span style=color:#fff> </span><span style=color:#6639ba>Getlen</span><span style=color:#1f2328>()</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>q</span><span style=color:#fff> </span><span style=color:#0550ae>:=</span><span style=color:#fff> </span><span style=color:#1f2328>p</span><span style=color:#1f2328>.</span><span style=color:#1f2328>head</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>m</span><span style=color:#fff> </span><span style=color:#0550ae>:=</span><span style=color:#fff> </span><span style=color:#0550ae>0</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#cf222e>for</span><span style=color:#fff> </span><span style=color:#1f2328>q</span><span style=color:#fff> </span><span style=color:#0550ae>!=</span><span style=color:#fff> </span><span style=color:#cf222e>nil</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>m</span><span style=color:#0550ae>++</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>q</span><span style=color:#fff> </span><span style=color:#1f2328>=</span><span style=color:#fff> </span><span style=color:#1f2328>q</span><span style=color:#1f2328>.</span><span style=color:#1f2328>next</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>fmt</span><span style=color:#1f2328>.</span><span style=color:#6639ba>Println</span><span style=color:#1f2328>(</span><span style=color:#1f2328>m</span><span style=color:#1f2328>)</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li>main.go</li></ol><div class=highlight><div style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#cf222e>package</span><span style=color:#fff> </span><span style=color:#1f2328>main</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#cf222e>func</span><span style=color:#fff> </span><span style=color:#6639ba>main</span><span style=color:#1f2328>()</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#cf222e>var</span><span style=color:#fff> </span><span style=color:#1f2328>l</span><span style=color:#fff> </span><span style=color:#1f2328>Link</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#cf222e>for</span><span style=color:#fff> </span><span style=color:#1f2328>i</span><span style=color:#fff> </span><span style=color:#0550ae>:=</span><span style=color:#fff> </span><span style=color:#0550ae>1</span><span style=color:#1f2328>;</span><span style=color:#fff> </span><span style=color:#1f2328>i</span><span style=color:#fff> </span><span style=color:#0550ae>&amp;</span><span style=color:#1f2328>lt</span><span style=color:#1f2328>;</span><span style=color:#fff> </span><span style=color:#0550ae>10</span><span style=color:#1f2328>;</span><span style=color:#fff> </span><span style=color:#1f2328>i</span><span style=color:#0550ae>++</span><span style=color:#fff> </span><span style=color:#1f2328>{</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#1f2328>l</span><span style=color:#1f2328>.</span><span style=color:#6639ba>InsertTail</span><span style=color:#1f2328>(</span><span style=color:#1f2328>i</span><span style=color:#1f2328>)</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#57606a>//l.InsertHead(i)</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>		</span><span style=color:#57606a>//l.InsertTail(fmt.Sprintf(&#34;str %d&#34;, i))</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>l</span><span style=color:#1f2328>.</span><span style=color:#6639ba>Trans</span><span style=color:#1f2328>()</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#fff>	</span><span style=color:#1f2328>l</span><span style=color:#1f2328>.</span><span style=color:#6639ba>Getlen</span><span style=color:#1f2328>()</span><span style=color:#fff>
+</span></span></span><span style=display:flex><span><span style=color:#1f2328>}</span><span style=color:#fff>
+</span></span></span></code></pre></td></tr></table></div></div></div><div class="post-meta meta-tags">没有标签</div></article><div class="post bg-white"><script src=https://utteranc.es/client.js repo=Dlgde/blog-issues issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><footer id=footer><div>&copy; 2026 <a href=http://dlgde.github.io/>Qstudy的博客</a></div><br></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><a id=rocket href=#top></a><script type=text/javascript src='/js/totop.js?v=0.0.0' async></script><script type=text/javascript src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js async></script><script src=/js/douban.js></script></div><div id=secondary><section class=widget><form id=search action=http://dlgde.github.io/search/ method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch value=http://dlgde.github.io/>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=http://dlgde.github.io/post/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E5%B9%B4/ title=又是新的一年>又是新的一年</a></li><li><a href=http://dlgde.github.io/2021/11/26/ title=First_beego>First_beego</a></li><li><a href=http://dlgde.github.io/2021/10/10/ title=关于择偶>关于择偶</a></li><li><a href=http://dlgde.github.io/2021/06/05/ title=移除链表元素>移除链表元素</a></li><li><a href=http://dlgde.github.io/2021/04/08/ title=Nginx日志统计>Nginx日志统计</a></li><li><a href=http://dlgde.github.io/post/fibonacci/ title=Fibonacci>Fibonacci</a></li><li><a href=http://dlgde.github.io/archives/221/ title=再来学习一下tcp>再来学习一下tcp</a></li><li><a href=http://dlgde.github.io/archives/210/ title=linux系统进程状态有哪些？>linux系统进程状态有哪些？</a></li><li><a href=http://dlgde.github.io/archives/209/ title=理解平均负载和CPU使用率>理解平均负载和CPU使用率</a></li><li><a href=http://dlgde.github.io/archives/208/ title=理解Linux中的buffer和cache>理解Linux中的buffer和cache</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list><li><a href=http://dlgde.github.io/categories/Git/>Git (2)</a></li><li><a href=http://dlgde.github.io/categories/golang/>Golang (13)</a></li><li><a href=http://dlgde.github.io/categories/leetcode/>Leetcode (1)</a></li><li><a href=http://dlgde.github.io/categories/linux/>Linux (3)</a></li><li><a href=http://dlgde.github.io/categories/Network/>Network (1)</a></li><li><a href=http://dlgde.github.io/categories/shell/>Shell (1)</a></li><li><a href=http://dlgde.github.io/categories/web/>Web (1)</a></li><li><a href=http://dlgde.github.io/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/>未分类 (1)</a></li><li><a href=http://dlgde.github.io/categories/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/>生活感悟 (1)</a></li><li><a href=http://dlgde.github.io/categories/%E7%AE%97%E6%B3%95/>算法 (2)</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud><a href=http://dlgde.github.io/tags/beego/>Beego</a>
+<a href=http://dlgde.github.io/tags/buffer%E5%92%8Ccash/>Buffer和cash</a>
+<a href=http://dlgde.github.io/tags/goroute/>Goroute</a>
+<a href=http://dlgde.github.io/tags/go%E5%AE%9E%E7%8E%B0socket%E7%BC%96%E7%A8%8B/>Go实现socket编程</a>
+<a href=http://dlgde.github.io/tags/go%E5%BC%82%E5%B8%B8/>Go异常</a>
+<a href=http://dlgde.github.io/tags/LeetCode/>LeetCode</a>
+<a href=http://dlgde.github.io/tags/nginx/>Nginx</a>
+<a href=http://dlgde.github.io/tags/rpc/>Rpc</a>
+<a href=http://dlgde.github.io/tags/tcp/>Tcp</a>
+<a href=http://dlgde.github.io/tags/%E5%8D%95%E9%93%BE%E8%A1%A8%E5%8F%8D%E8%BD%AC/>单链表反转</a>
+<a href=http://dlgde.github.io/tags/%E6%89%BE%E5%AF%B9%E8%B1%A1/>找对象</a>
+<a href=http://dlgde.github.io/tags/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/>生活感悟</a>
+<a href=http://dlgde.github.io/tags/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/>选择排序</a></div></section><section class=widget><h3 class=widget-title>友情链接</h3><ul class=widget-list><li><a target=_blank href title></a></li></ul></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=http://dlgde.github.io/index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>
