@@ -109,6 +109,21 @@ pre {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+
+/* 代码行号对齐修复 */
+.highlighttable {
+    table-layout: fixed;
+}
+.highlighttable td.lineno {
+    width: 40px;
+    padding-right: 10px;
+    text-align: right;
+    color: #999;
+    border-right: 1px solid #ddd;
+}
+.highlighttable td.code {
+    padding-left: 10px;
+}
 code {
     display: inline-block;
 }
