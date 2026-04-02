@@ -107,29 +107,6 @@ pre {
     border: 1px solid #ddd;
     display: block;
 }
-
-.highlighttable {
-    display: block;
-    overflow-x: auto;
-}
-.highlighttable td {
-    padding: 0;
-    border: none;
-}
-.highlighttable td.lineno {
-    width: 40px;
-    text-align: right;
-    color: #999;
-    border-right: 1px solid #ddd;
-    padding-right: 8px;
-    user-select: none;
-    vertical-align: top;
-}
-.highlighttable td.code {
-    padding-left: 12px;
-    white-space: pre;
-    word-wrap: normal;
-}
 code {
     display: inline-block;
 }
