@@ -1,3 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Buffer和cash on Qstudy的博客</title><link>http://dlgde.github.io/tags/buffer%E5%92%8Ccash/</link><description>Recent content in Buffer和cash on Qstudy的博客</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Sat, 16 Nov 2019 11:12:14 +0000</lastBuildDate><atom:link href="http://dlgde.github.io/tags/buffer%E5%92%8Ccash/index.xml" rel="self" type="application/rss+xml"/><item><title>理解Linux中的buffer和cache</title><link>http://dlgde.github.io/archives/208/</link><pubDate>Sat, 16 Nov 2019 11:12:14 +0000</pubDate><guid>http://dlgde.github.io/archives/208/</guid><description>&lt;h2 id="磁盘和文件的区别"&gt;磁盘和文件的区别：&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Buffer和cash on Qstudy的博客</title><link>http://dlgde.github.io/tags/buffer%E5%92%8Ccash/</link><description>Recent content in Buffer和cash on Qstudy的博客</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Sat, 16 Nov 2019 11:12:14 +0000</lastBuildDate><atom:link href="http://dlgde.github.io/tags/buffer%E5%92%8Ccash/index.xml" rel="self" type="application/rss+xml"/><item><title>理解Linux中的buffer和cache</title><link>http://dlgde.github.io/post/2019/%E7%90%86%E8%A7%A3linux%E4%B8%AD%E7%9A%84buffer%E5%92%8Ccache/</link><pubDate>Sat, 16 Nov 2019 11:12:14 +0000</pubDate><guid>http://dlgde.github.io/post/2019/%E7%90%86%E8%A7%A3linux%E4%B8%AD%E7%9A%84buffer%E5%92%8Ccache/</guid><description>&lt;h2 id="磁盘和文件的区别"&gt;磁盘和文件的区别：&lt;/h2&gt;
 &lt;p&gt;关于磁盘和文件的区别，本来以为大家都懂了，所以没有细讲。&lt;strong&gt;磁盘是一个块设备，可以划分为不同的分区；在分区之上再创建文件系统，挂载到某个目录，之后才可以在这个目录中读写文件&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;其实 Linux 中“一切皆文件”，而文章中提到的“文件”是普通文件，磁盘是块设备文件，这些大家可以执行 &amp;ldquo;ls -l &amp;lt;路径&amp;gt;&amp;rdquo; 查看它们的区别（输出的含义如果不懂请 man ls 查询）。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;其实 Linux 中“一切皆文件”，而文章中提到的“文件”是普通文件，磁盘是块设备文件，这些大家可以执行 &amp;ldquo;ls -l &amp;lt;路径&amp;gt;&amp;rdquo; 查看它们的区别（输出的含义如果不懂请 man ls 查询）。&lt;/p&gt;
+&lt;p&gt;**在读写普通文件时，会经过文件系统，由文件系统负责与磁盘交互；而读写磁盘或者分区时，就会跳过文件系统，也就是所谓的“裸I/O“。**这两种读写方式所使用的缓存是不同的，也就是文中所讲的 Cache 和 Buffer 区别。&lt;/p&gt;
+&lt;h2 id="buffer和cache的区别"&gt;buffer和cache的区别：&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Buffer 是对磁盘数据的缓存，而 Cache 是文件数据的缓存，它们既会用在读请求中，也会用在写请求中&lt;/strong&gt;;&lt;/p&gt;
+&lt;p&gt;插曲：理论上，一个文件读首先到Block Buffer, 然后到Page Cache。有了文件系统才有了Page Cache.&lt;br&gt;
+在老的Linux上这两个Cache是分开的。那这样对于文件数据，会被Cache两次。这种方案虽然简单，&lt;br&gt;
+但低效。后期Linux把这两个Cache统一了。对于文件，Page Cache指向Block Buffer，对于非文件&lt;br&gt;
+则是Block Buffer。这样就如文件实验的结果，文件操作，只影响Page Cache，Raw操作，则只影响Buffer. 比如一此VM虚拟机，则会越过File System，只接操作 Disk, 常说的Direct IO.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;free的数据来源，可以通过man free查看，来自/proc/meminfo;**/proc 是 Linux 内核提供的一种特殊文件系统，是用户 跟内核交互的接口。**比方说，用户可以从 /proc 中查询内核的运行状态和配置选项，查询进程的运行状态、统计数据等，当然，你也可以通过 /proc 来修改内核的配置。&lt;/p&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;vmstat命令学习，vmstat 1表示每一分钟输出一组数据；bi 和 bo 则分别表示块设备读取和写入的大小，单位为块 / 秒。因为 Linux 中块的大小 是 1KB，所以这个单位也就等价于 KB/s。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;问题：“因为 Linux 中块的大小是 1KB，所以这个单位也就等价于 KB/s。”关于这一点，想请问下老师，linux block的大小不是4KB呢？&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;​ 回答：这句话来自vmstat的文档：https://linux.die.net/man/8/vmstat，通常说的的 Block Size 是磁盘分区的块大小， 的确都是 4KB 了&lt;/p&gt;</description></item></channel></rss>
