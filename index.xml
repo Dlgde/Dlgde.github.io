@@ -1,4 +1,95 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Qstudy的博客</title><link>http://dlgde.github.io/</link><description>Recent content on Qstudy的博客</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Fri, 22 Mar 2024 16:14:07 +0800</lastBuildDate><atom:link href="http://dlgde.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>又是新的一年</title><link>http://dlgde.github.io/post/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E5%B9%B4/</link><pubDate>Fri, 22 Mar 2024 16:14:07 +0800</pubDate><guid>http://dlgde.github.io/post/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E5%B9%B4/</guid><description>&lt;p&gt;hahah,又是一年，我又来了&lt;/p&gt;</description></item><item><title>First_beego</title><link>http://dlgde.github.io/2021/11/26/</link><pubDate>Fri, 26 Nov 2021 23:27:26 +0800</pubDate><guid>http://dlgde.github.io/2021/11/26/</guid><description>&lt;h3 id="使用beego创建api项目实现增删改查简单记录"&gt;使用beego创建api项目，实现增删改查，简单记录&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Qstudy的博客</title><link>http://dlgde.github.io/</link><description>Recent content on Qstudy的博客</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0800</lastBuildDate><atom:link href="http://dlgde.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>本地软件安装配置总览</title><link>http://dlgde.github.io/post/2026-06-01-%E6%9C%AC%E5%9C%B0%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E6%80%BB%E8%A7%88/</link><pubDate>Mon, 01 Jun 2026 00:00:00 +0800</pubDate><guid>http://dlgde.github.io/post/2026-06-01-%E6%9C%AC%E5%9C%B0%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E6%80%BB%E8%A7%88/</guid><description>&lt;h2 id="nodejs-环境"&gt;Node.js 环境&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;项目&lt;/th&gt;
+ &lt;th&gt;详情&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;管理器&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;nvm&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;版本目录&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;~/.nvm/versions/node/&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Node 22&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;v22.22.2&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Node 24&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;v24.16.0&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;2
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;3
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;4
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#6639ba"&gt;source&lt;/span&gt; ~/.nvm/nvm.sh &lt;span style="color:#57606a"&gt;# 加载 nvm（新建终端会自动加载）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;nvm use &lt;span style="color:#0550ae"&gt;22&lt;/span&gt; &lt;span style="color:#57606a"&gt;# 切换到 Node 22&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;nvm use &lt;span style="color:#0550ae"&gt;24&lt;/span&gt; &lt;span style="color:#57606a"&gt;# 切换到 Node 24&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;nvm ls &lt;span style="color:#57606a"&gt;# 查看已安装版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;nvm &lt;span style="color:#6639ba"&gt;alias&lt;/span&gt; default &lt;span style="color:#0550ae"&gt;22&lt;/span&gt; &lt;span style="color:#57606a"&gt;# 设置默认版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="1-hermes-ai-助手"&gt;1. Hermes (AI 助手)&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;项目&lt;/th&gt;
+ &lt;th&gt;详情&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;类型&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Python (pip)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;版本&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;v0.15.1&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;路径&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;~/.local/bin/hermes&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;配置&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;~/.hermes/config.yaml&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;数据目录&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;~/.hermes/&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;日志&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;~/.hermes/logs/&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;安装/更新：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh &lt;span style="color:#1f2328"&gt;|&lt;/span&gt; bash
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;hermes update &lt;span style="color:#57606a"&gt;# 更新&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;常用命令：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>又是新的一年</title><link>http://dlgde.github.io/post/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E5%B9%B4/</link><pubDate>Fri, 22 Mar 2024 16:14:07 +0800</pubDate><guid>http://dlgde.github.io/post/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E5%B9%B4/</guid><description>&lt;p&gt;hahah,又是一年，我又来了&lt;/p&gt;</description></item><item><title>First_beego</title><link>http://dlgde.github.io/2021/11/26/</link><pubDate>Fri, 26 Nov 2021 23:27:26 +0800</pubDate><guid>http://dlgde.github.io/2021/11/26/</guid><description>&lt;h3 id="使用beego创建api项目实现增删改查简单记录"&gt;使用beego创建api项目，实现增删改查，简单记录&lt;/h3&gt;
 &lt;h4 id="1mac安装beego和bee工具"&gt;1.mac安装beego和bee工具&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;div style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;
 &lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
