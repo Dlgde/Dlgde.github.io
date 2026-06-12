@@ -1,0 +1,181 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=referrer content="no-referrer-when-downgrade"><title>Git 常用命令与最佳实践 | Qstudy的博客</title><meta property="og:title" content="Git 常用命令与最佳实践 - Qstudy的博客"><meta property="og:type" content="article"><meta property="article:published_time" content='2026-06-12T10:00:00+08:00'><meta property="article:modified_time" content='2026-06-12T10:00:00+08:00'><meta name=Keywords content="golang,go语言,go语言笔记,linux,网站架构,算法，分布式，运维，docker，kubernetes，k8s，nginx等"><meta name=description content="整理 Git 日常高频命令、分支管理策略、提交规范以及实际工作中的踩坑经验"><meta name=author content="Qstudy"><meta property="og:url" content="http://dlgde.github.io/post/2026/git-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script><link rel=stylesheet href=/css/douban.css><link rel=stylesheet href=/css/other.css></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=/>Qstudy的博客</a><p class=description>记录个人学习空间</p></div><div><nav id=nav-menu class=clearfix><a class=current href=/>首页</a>
+<a href=/read/ title=读书>读书</a>
+<a href=/about/ title=关于>关于</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><style type=text/css>.post-toc{position:fixed;width:200px;margin-left:-210px;padding:5px 10px;font-family:Athelas,STHeiti,Microsoft Yahei,serif;font-size:12px;border:1px solid rgba(0,0,0,7%);border-radius:5px;background-color:rgba(255,255,255,.98);background-clip:padding-box;-webkit-box-shadow:1px 1px 2px rgba(0,0,0,.125);box-shadow:1px 1px 2px rgba(0,0,0,.125);word-wrap:break-word;white-space:nowrap;-webkit-box-sizing:border-box;box-sizing:border-box;z-index:999;cursor:pointer;max-height:70%;overflow-y:auto;overflow-x:hidden}.post-toc .post-toc-title{width:100%;margin:0 auto;font-size:20px;font-weight:400;text-transform:uppercase;text-align:center}.post-toc .post-toc-content{font-size:15px}.post-toc .post-toc-content>nav>ul{margin:10px 0}.post-toc .post-toc-content ul{padding-left:20px;list-style:square;margin:.5em;line-height:1.8em}.post-toc .post-toc-content ul ul{padding-left:15px;display:none}@media print,screen and (max-width:1057px){.post-toc{display:none}}</style><div class=post-toc style=position:absolute;top:188px><h2 class=post-toc-title>文章目录</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><a href=#引言>引言</a></li><li><a href=#基础配置>基础配置</a></li><li><a href=#日常高频工作流>日常高频工作流</a><ul><li><a href=#拉代码--改代码--提交--推送>拉代码 → 改代码 → 提交 → 推送</a></li><li><a href=#提交前最后一次审视>提交前最后一次审视</a></li><li><a href=#查看提交历史>查看提交历史</a></li></ul></li><li><a href=#分支操作>分支操作</a><ul><li><a href=#创建和切换>创建和切换</a></li><li><a href=#分支命名惯例>分支命名惯例</a></li><li><a href=#同步分支>同步分支</a></li><li><a href=#删除分支>删除分支</a></li></ul></li><li><a href=#撤销与回退>撤销与回退</a><ul><li><a href=#还没-commit撤销暂存或修改>还没 commit：撤销暂存或修改</a></li><li><a href=#已经-commit-但没-push>已经 commit 但没 push</a></li><li><a href=#已经-push-了>已经 push 了</a></li></ul></li><li><a href=#合并与-rebase>合并与 Rebase</a><ul><li><a href=#merge-vs-rebase-怎么选>Merge vs Rebase 怎么选</a></li><li><a href=#交互式-rebase整理提交历史>交互式 Rebase（整理提交历史）</a></li><li><a href=#解决冲突>解决冲突</a></li></ul></li><li><a href=#stash临时保存工作现场>Stash：临时保存工作现场</a></li><li><a href=#tag版本标记>Tag：版本标记</a><ul><li><a href=#创建-tag>创建 Tag</a></li><li><a href=#查看-tag>查看 Tag</a></li><li><a href=#推送-tag>推送 Tag</a></li><li><a href=#删除-tag>删除 Tag</a></li><li><a href=#基于-tag-切分支>基于 Tag 切分支</a></li><li><a href=#语义化版本-semantic-versioning>语义化版本 (Semantic Versioning)</a></li></ul></li><li><a href=#查看与对比>查看与对比</a></li><li><a href=#实用小技巧>实用小技巧</a><ul><li><a href=#只-add-已跟踪文件的修改不加新文件>只 add 已跟踪文件的修改（不加新文件）</a></li><li><a href=#交互式暂存只-add-文件的一部分>交互式暂存（只 add 文件的一部分）</a></li><li><a href=#找回误删的分支>找回误删的分支</a></li><li><a href=#查看某个文件在两个分支间的差异>查看某个文件在两个分支间的差异</a></li><li><a href=#cherry-pick只拿某一个-commit>cherry-pick：只拿某一个 commit</a></li></ul></li><li><a href=#提交信息规范>提交信息规范</a></li><li><a href=#工作流建议>工作流建议</a><ul><li><a href=#日常开发节奏>日常开发节奏</a></li><li><a href=#几个原则>几个原则</a></li></ul></li><li><a href=#小结>小结</a></li></ul></nav></div></div><script type=text/javascript>$(document).ready(function(){if(e=$(".post-toc"),e.length){t=$("#main").offset().left,t<220&&e.css({width:t-10,"margin-left":0-t});var e,t,n=e.offset().top-20,s={start:{position:"absolute",top:n},process:{position:"fixed",top:20}};$(window).scroll(function(){var t=$(window).scrollTop();t<n?e.css(s.start):e.css(s.process)})}})</script><article class=post><header><h1 class=post-title>Git 常用命令与最佳实践</h1></header><date class="post-meta meta-date">2026年6月12日</date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=/categories/%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE>工具配置</a></span></div><div class=post-meta><span id=busuanzi_container_page_pv>|<span id=busuanzi_value_page_pv></span><span>
+阅读</span></span></div><div class=clear style=display:none><div class=toc-article><div class=toc-title>文章目录</div></div></div><div class=post-content><h2 id=引言>引言</h2><p>Git 是日常开发中最常用的工具之一，但很多人只停留在 <code>add</code> / <code>commit</code> / <code>push</code> 三步走。这篇文章整理了我日常使用的高频命令、分支管理策略和提交规范, 希望能帮你更高效地使用 Git。</p><hr><h2 id=基础配置>基础配置</h2><p>装好 Git 后第一件事——设置用户名和邮箱, 每次提交都会带上这些信息:</p><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>git config --global user.name <span style=color:#0a3069>&#34;Your Name&#34;</span>
+</span></span><span style=display:flex><span>git config --global user.email <span style=color:#0a3069>&#34;your@email.com&#34;</span>
+</span></span></code></pre></div><p>几个推荐的全局配置:</p><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 换行符统一为 LF（跨平台协作必备）</span>
+</span></span><span style=display:flex><span>git config --global core.autocrlf input
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 设置默认分支名为 main</span>
+</span></span><span style=display:flex><span>git config --global init.defaultBranch main
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 使用更直观的冲突标记</span>
+</span></span><span style=display:flex><span>git config --global merge.conflictStyle diff3
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 彩色输出</span>
+</span></span><span style=display:flex><span>git config --global color.ui auto
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 别名（高频命令缩短）</span>
+</span></span><span style=display:flex><span>git config --global alias.co checkout
+</span></span><span style=display:flex><span>git config --global alias.br branch
+</span></span><span style=display:flex><span>git config --global alias.ci commit
+</span></span><span style=display:flex><span>git config --global alias.st status
+</span></span><span style=display:flex><span>git config --global alias.lg <span style=color:#0a3069>&#34;log --oneline --graph --all --decorate -20&#34;</span>
+</span></span></code></pre></div><hr><h2 id=日常高频工作流>日常高频工作流</h2><h3 id=拉代码--改代码--提交--推送>拉代码 → 改代码 → 提交 → 推送</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>git pull                  <span style=color:#57606a># 拉最新代码</span>
+</span></span><span style=display:flex><span><span style=color:#57606a># ... 改代码 ...</span>
+</span></span><span style=display:flex><span>git status                <span style=color:#57606a># 看改了什么</span>
+</span></span><span style=display:flex><span>git diff                  <span style=color:#57606a># 看具体改动内容</span>
+</span></span><span style=display:flex><span>git add &lt;file&gt;            <span style=color:#57606a># 暂存</span>
+</span></span><span style=display:flex><span>git commit -m <span style=color:#0a3069>&#34;xxx&#34;</span>       <span style=color:#57606a># 提交</span>
+</span></span><span style=display:flex><span>git push                  <span style=color:#57606a># 推送</span>
+</span></span></code></pre></div><h3 id=提交前最后一次审视>提交前最后一次审视</h3><p><code>git add</code> 之后再跑一遍 <code>git diff --staged</code> 看看将要提交的 diff, 避免把调试代码、临时注释带上去。</p><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>git diff --staged
+</span></span></code></pre></div><h3 id=查看提交历史>查看提交历史</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 简洁的一行日志（配合别名 lg 更好用）</span>
+</span></span><span style=display:flex><span>git log --oneline --graph --all --decorate -20
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 查看某文件的修改历史</span>
+</span></span><span style=display:flex><span>git log -p -- &lt;file&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 看某次提交的详细内容</span>
+</span></span><span style=display:flex><span>git show &lt;commit-hash&gt;
+</span></span></code></pre></div><hr><h2 id=分支操作>分支操作</h2><h3 id=创建和切换>创建和切换</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 创建分支并切换过去</span>
+</span></span><span style=display:flex><span>git checkout -b feature/xxx
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 等价于新版 Git 的</span>
+</span></span><span style=display:flex><span>git switch -c feature/xxx
+</span></span></code></pre></div><h3 id=分支命名惯例>分支命名惯例</h3><table><thead><tr><th>前缀</th><th>用途</th></tr></thead><tbody><tr><td><code>feature/</code></td><td>新功能</td></tr><tr><td><code>fix/</code></td><td>Bug 修复</td></tr><tr><td><code>hotfix/</code></td><td>紧急线上修复</td></tr><tr><td><code>refactor/</code></td><td>重构</td></tr><tr><td><code>docs/</code></td><td>文档</td></tr><tr><td><code>chore/</code></td><td>杂项（依赖更新、配置调整等）</td></tr></tbody></table><h3 id=同步分支>同步分支</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 把 main 的最新代码合并到当前分支</span>
+</span></span><span style=display:flex><span>git fetch origin
+</span></span><span style=display:flex><span>git rebase origin/main
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 或者用 merge</span>
+</span></span><span style=display:flex><span>git merge origin/main
+</span></span></code></pre></div><h3 id=删除分支>删除分支</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 删除本地分支</span>
+</span></span><span style=display:flex><span>git branch -d feature/xxx
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 删除远程分支</span>
+</span></span><span style=display:flex><span>git push origin --delete feature/xxx
+</span></span></code></pre></div><hr><h2 id=撤销与回退>撤销与回退</h2><p>这是最让人心跳加速的部分, 搞清楚了能减少很多焦虑。</p><h3 id=还没-commit撤销暂存或修改>还没 commit：撤销暂存或修改</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 取消暂存（把文件从 staging area 拿出来）</span>
+</span></span><span style=display:flex><span>git restore --staged &lt;file&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 丢弃工作区的修改（⚠️ 不可恢复）</span>
+</span></span><span style=display:flex><span>git restore &lt;file&gt;
+</span></span></code></pre></div><h3 id=已经-commit-但没-push>已经 commit 但没 push</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 修改最近一次提交（追加改动、改 commit message）</span>
+</span></span><span style=display:flex><span>git commit --amend
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 只改 commit message, 不改内容</span>
+</span></span><span style=display:flex><span>git commit --amend -m <span style=color:#0a3069>&#34;新的 message&#34;</span>
+</span></span></code></pre></div><h3 id=已经-push-了>已经 push 了</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 回退到指定 commit, 保留改动在工作区</span>
+</span></span><span style=display:flex><span>git reset --soft HEAD~1
+</span></span><span style=display:flex><span>git push --force-with-lease
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 新建一个反向提交来撤销（更安全, 适合公共分支）</span>
+</span></span><span style=display:flex><span>git revert &lt;commit-hash&gt;
+</span></span></code></pre></div><blockquote><p><strong>关键区分</strong>: <code>git revert</code> 不会改写历史, 而是生成一个新 commit 来反向操作, 更适合多人协作的主分支。<code>git reset</code> + <code>--force</code> 会改写历史, 只应在自己的分支上用。</p></blockquote><hr><h2 id=合并与-rebase>合并与 Rebase</h2><h3 id=merge-vs-rebase-怎么选>Merge vs Rebase 怎么选</h3><table><thead><tr><th>场景</th><th>推荐</th></tr></thead><tbody><tr><td>把 main 同步到 feature 分支</td><td><code>rebase</code>——保持历史线性</td></tr><tr><td>把 feature 合入 main</td><td><code>merge</code>——保留分支合并点</td></tr><tr><td>合入前清理 feature 分支的提交记录</td><td><code>rebase -i</code> 整理后再 merge</td></tr></tbody></table><h3 id=交互式-rebase整理提交历史>交互式 Rebase（整理提交历史）</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 整理最近 3 条 commit</span>
+</span></span><span style=display:flex><span>git rebase -i HEAD~3
+</span></span></code></pre></div><p>常用操作:</p><ul><li><code>pick</code> — 保留这个 commit</li><li><code>squash</code> — 合并到上一个 commit</li><li><code>reword</code> — 改 commit message</li><li><code>drop</code> — 删掉这个 commit</li></ul><h3 id=解决冲突>解决冲突</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># rebase 过程中冲突了</span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 1. 手动解决冲突文件</span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 2. 标记为已解决</span>
+</span></span><span style=display:flex><span>git add &lt;resolved-file&gt;
+</span></span><span style=display:flex><span><span style=color:#57606a># 3. 继续 rebase</span>
+</span></span><span style=display:flex><span>git rebase --continue
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 想放弃这次 rebase</span>
+</span></span><span style=display:flex><span>git rebase --abort
+</span></span></code></pre></div><hr><h2 id=stash临时保存工作现场>Stash：临时保存工作现场</h2><p>写了一半代码, 突然要切分支处理紧急问题：</p><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 保存当前改动</span>
+</span></span><span style=display:flex><span>git stash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 保存时加说明</span>
+</span></span><span style=display:flex><span>git stash save <span style=color:#0a3069>&#34;写了一半的登录功能&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 查看 stash 列表</span>
+</span></span><span style=display:flex><span>git stash list
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 恢复最近一次 stash（不删除 stash 记录）</span>
+</span></span><span style=display:flex><span>git stash apply
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 恢复最近一次 stash（删除记录）</span>
+</span></span><span style=display:flex><span>git stash pop
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 恢复指定 stash</span>
+</span></span><span style=display:flex><span>git stash apply stash@<span style=color:#0550ae>{</span>2<span style=color:#0550ae>}</span>
+</span></span></code></pre></div><hr><h2 id=tag版本标记>Tag：版本标记</h2><p>Tag 用于标记重要的版本节点, 最常见的就是发布版本号。</p><h3 id=创建-tag>创建 Tag</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 轻量标签（只指向某个 commit）</span>
+</span></span><span style=display:flex><span>git tag v1.0.0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 附注标签（含 tagger、日期、说明信息，推荐）</span>
+</span></span><span style=display:flex><span>git tag -a v1.0.0 -m <span style=color:#0a3069>&#34;正式发布 v1.0.0&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 给过去的某个 commit 补打 tag</span>
+</span></span><span style=display:flex><span>git tag -a v1.0.0 &lt;commit-hash&gt; -m <span style=color:#0a3069>&#34;补标记&#34;</span>
+</span></span></code></pre></div><blockquote><p><strong>轻量 vs 附注</strong>: 附注标签是一个完整的 Git 对象, 带有作者、日期和 message, <code>git show v1.0.0</code> 能看到详细信息。轻量标签只是一个引用, 没有额外信息。发布版本推荐用附注标签。</p></blockquote><h3 id=查看-tag>查看 Tag</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 列出所有标签</span>
+</span></span><span style=display:flex><span>git tag
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 按版本号模式过滤</span>
+</span></span><span style=display:flex><span>git tag -l <span style=color:#0a3069>&#34;v1.*&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 查看某个标签的详细信息</span>
+</span></span><span style=display:flex><span>git show v1.0.0
+</span></span></code></pre></div><h3 id=推送-tag>推送 Tag</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 推送单个 tag</span>
+</span></span><span style=display:flex><span>git push origin v1.0.0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 推送所有本地 tag</span>
+</span></span><span style=display:flex><span>git push origin --tags
+</span></span></code></pre></div><blockquote><p><code>git push</code> 默认不会推送 tag, 需要显式指定。常见的做法是推代码时顺手跟上 tag: <code>git push && git push origin --tags</code>。</p></blockquote><h3 id=删除-tag>删除 Tag</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 删除本地 tag</span>
+</span></span><span style=display:flex><span>git tag -d v1.0.0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 删除远程 tag</span>
+</span></span><span style=display:flex><span>git push origin --delete v1.0.0
+</span></span></code></pre></div><h3 id=基于-tag-切分支>基于 Tag 切分支</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 从某个 tag 切出分支做 hotfix</span>
+</span></span><span style=display:flex><span>git checkout -b hotfix/v1.0.1 v1.0.0
+</span></span></code></pre></div><h3 id=语义化版本-semantic-versioning>语义化版本 (Semantic Versioning)</h3><p>推荐按 <a href=https://semver.org/lang/zh-CN/>SemVer</a> 规范给 tag 命名：</p><table><thead><tr><th>版本号</th><th>含义</th><th>示例场景</th></tr></thead><tbody><tr><td>主版本号</td><td>不兼容的 API 修改</td><td><code>v1.0.0</code> → <code>v2.0.0</code></td></tr><tr><td>次版本号</td><td>向下兼容的功能新增</td><td><code>v1.0.0</code> → <code>v1.1.0</code></td></tr><tr><td>修订号</td><td>向下兼容的 Bug 修复</td><td><code>v1.0.0</code> → <code>v1.0.1</code></td></tr></tbody></table><hr><h2 id=查看与对比>查看与对比</h2><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 看某个 commit 和它的父 commit 的差异</span>
+</span></span><span style=display:flex><span>git show &lt;commit&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 两个分支的差异</span>
+</span></span><span style=display:flex><span>git diff main..feature/xxx
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 看谁改了这个文件的每一行</span>
+</span></span><span style=display:flex><span>git blame &lt;file&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#57606a># 看某一行是谁什么时候改的</span>
+</span></span><span style=display:flex><span>git blame -L 10,20 &lt;file&gt;
+</span></span></code></pre></div><hr><h2 id=实用小技巧>实用小技巧</h2><h3 id=只-add-已跟踪文件的修改不加新文件>只 add 已跟踪文件的修改（不加新文件）</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>git add -u
+</span></span></code></pre></div><h3 id=交互式暂存只-add-文件的一部分>交互式暂存（只 add 文件的一部分）</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>git add -p &lt;file&gt;
+</span></span></code></pre></div><h3 id=找回误删的分支>找回误删的分支</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#57606a># 先看 reflog 找分支的最后一个 commit</span>
+</span></span><span style=display:flex><span>git reflog
+</span></span><span style=display:flex><span><span style=color:#57606a># 从那个 commit 重建分支</span>
+</span></span><span style=display:flex><span>git checkout -b recovered-branch &lt;commit-hash&gt;
+</span></span></code></pre></div><h3 id=查看某个文件在两个分支间的差异>查看某个文件在两个分支间的差异</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>git diff main feature/xxx -- path/to/file
+</span></span></code></pre></div><h3 id=cherry-pick只拿某一个-commit>cherry-pick：只拿某一个 commit</h3><div class=highlight><pre tabindex=0 style=background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>git cherry-pick &lt;commit-hash&gt;
+</span></span></code></pre></div><hr><h2 id=提交信息规范>提交信息规范</h2><p>推荐使用 <a href=https://www.conventionalcommits.org/>Conventional Commits</a> 格式:</p><pre tabindex=0><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+
+&lt;body&gt;
+
+&lt;footer&gt;
+</code></pre><p>type 常用值:</p><table><thead><tr><th>type</th><th>说明</th></tr></thead><tbody><tr><td><code>feat</code></td><td>新功能</td></tr><tr><td><code>fix</code></td><td>Bug 修复</td></tr><tr><td><code>refactor</code></td><td>重构</td></tr><tr><td><code>docs</code></td><td>文档</td></tr><tr><td><code>style</code></td><td>格式（不影响代码逻辑）</td></tr><tr><td><code>test</code></td><td>测试</td></tr><tr><td><code>chore</code></td><td>构建/工具/依赖</td></tr></tbody></table><p>示例:</p><pre tabindex=0><code>feat(auth): 添加 JWT 登录支持
+
+实现了基于 JWT 的用户认证流程，包括 token 签发和验证中间件。
+
+Closes #42
+</code></pre><hr><h2 id=工作流建议>工作流建议</h2><h3 id=日常开发节奏>日常开发节奏</h3><ol><li>从 <code>main</code> 拉一个 feature 分支</li><li>小步提交, 每个 commit 只做一件事</li><li>commit message 清晰描述<strong>做了什么</strong>和<strong>为什么</strong></li><li>每天结束时 push 到远程（备份 + 方便别人提前看）</li><li>开发完成后, <code>rebase -i</code> 整理提交历史</li><li>发起 PR, 经过 Review 后合入 main</li></ol><h3 id=几个原则>几个原则</h3><ul><li><strong>一个 commit 只做一件事</strong>——方便 review, 方便 revert</li><li><strong>不要混入无关改动</strong>——比如格式化代码和功能修改分开两次 commit</li><li><strong>push 前先 pull/rebase</strong>——减少不必要的 merge commit</li><li><strong><code>--force-with-lease</code> 而不是 <code>--force</code></strong>——前者会检查远程有没有别人的新提交, 减少误覆盖</li><li><strong>不要 <code>commit --amend</code> 已经 push 的提交</strong>——除非只有你在用这个分支</li><li><strong>定期 <code>git fetch --prune</code></strong>——清理本地已不存在的远程分支引用</li></ul><hr><h2 id=小结>小结</h2><table><thead><tr><th>场景</th><th>命令</th></tr></thead><tbody><tr><td>撤销未 commit 的暂存</td><td><code>git restore --staged &lt;file></code></td></tr><tr><td>丢弃未 commit 的修改</td><td><code>git restore &lt;file></code></td></tr><tr><td>改最近一次 commit</td><td><code>git commit --amend</code></td></tr><tr><td>回退已 push 的 commit（自己的分支）</td><td><code>git reset --soft HEAD~1 && git push --force-with-lease</code></td></tr><tr><td>回退已 push 的 commit（公共分支）</td><td><code>git revert &lt;hash></code></td></tr><tr><td>临时切走保存现场</td><td><code>git stash</code></td></tr><tr><td>整理提交历史</td><td><code>git rebase -i HEAD~N</code></td></tr><tr><td>取某个 commit 到当前分支</td><td><code>git cherry-pick &lt;hash></code></td></tr><tr><td>找回误删分支</td><td><code>git reflog</code> + <code>git checkout -b 分支名 &lt;hash></code></td></tr><tr><td>创建附注标签</td><td><code>git tag -a v1.0.0 -m "说明"</code></td></tr><tr><td>推送 tag 到远程</td><td><code>git push origin v1.0.0</code> 或 <code>git push origin --tags</code></td></tr><tr><td>删除远程 tag</td><td><code>git push origin --delete v1.0.0</code></td></tr><tr><td>从 tag 切分支</td><td><code>git checkout -b hotfix/xxx v1.0.0</code></td></tr><tr><td>看某行代码是谁写的</td><td><code>git blame &lt;file></code></td></tr></tbody></table><p>Git 不是学一次就放下的工具, 多在实践中积累手感, 慢慢地从"不敢乱动"到"随便怎么玩都能救回来"。</p></div><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/post/2026/claude-code%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/>Claude Code 常用操作与最佳实践</a></li><li><a href=/post/2026/%E6%9C%AC%E5%9C%B0%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E6%80%BB%E8%A7%88/>Mac本地软件安装配置总览</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=/tags/git>Git</a></li><li><a href=/tags/%E5%B7%A5%E5%85%B7>工具</a></li><li><a href=/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5>最佳实践</a></li><li><a href=/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6>版本控制</a></li></ul></div></article><div class="post bg-white"><script src=https://utteranc.es/client.js repo=Dlgde/blog-issues issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><footer id=footer><div>&copy; 2026 <a href=/>Qstudy的博客</a></div><br></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><a id=rocket href=#top></a><script type=text/javascript src='/js/totop.js?v=0.0.0' async></script><script type=text/javascript src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js async></script><script src=/js/douban.js></script></div><div id=secondary><section class=widget><form id=search action=/search/ method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch value=http://dlgde.github.io/>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=/post/2026/git-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ title="Git 常用命令与最佳实践">Git 常用命令与最佳实践</a></li><li><a href=/post/2026/claude-code%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ title="Claude Code 常用操作与最佳实践">Claude Code 常用操作与最佳实践</a></li><li><a href=/post/2026/%E6%9C%AC%E5%9C%B0%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E6%80%BB%E8%A7%88/ title=Mac本地软件安装配置总览>Mac本地软件安装配置总览</a></li><li><a href=/post/2024/%E5%8F%88%E6%98%AF%E6%96%B0%E7%9A%84%E4%B8%80%E5%B9%B4/ title=又是新的一年>又是新的一年</a></li><li><a href=/post/2021/first_beego/ title=First_beego>First_beego</a></li><li><a href=/post/2021/%E5%85%B3%E4%BA%8E%E6%8B%A9%E5%81%B6/ title=关于择偶>关于择偶</a></li><li><a href=/post/2021/%E7%A7%BB%E9%99%A4%E9%93%BE%E8%A1%A8%E5%85%83%E7%B4%A0/ title=移除链表元素>移除链表元素</a></li><li><a href=/post/2021/nginx%E6%97%A5%E5%BF%97%E7%BB%9F%E8%AE%A1/ title=Nginx日志统计>Nginx日志统计</a></li><li><a href=/post/2021/fibonacci/ title=Fibonacci>Fibonacci</a></li><li><a href=/post/2020/%E5%86%8D%E6%9D%A5%E5%AD%A6%E4%B9%A0%E4%B8%80%E4%B8%8Btcp/ title=再来学习一下tcp>再来学习一下tcp</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list><li><a href=/categories/git/>Git (2)</a></li><li><a href=/categories/golang/>Golang (13)</a></li><li><a href=/categories/leetcode/>Leetcode (1)</a></li><li><a href=/categories/linux/>Linux (3)</a></li><li><a href=/categories/network/>Network (1)</a></li><li><a href=/categories/shell/>Shell (1)</a></li><li><a href=/categories/web/>Web (1)</a></li><li><a href=/categories/%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/>工具配置 (3)</a></li><li><a href=/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/>未分类 (1)</a></li><li><a href=/categories/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/>生活感悟 (1)</a></li><li><a href=/categories/%E7%AE%97%E6%B3%95/>算法 (2)</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud><a href=/tags/ai/>AI</a>
+<a href=/tags/beego/>Beego</a>
+<a href=/tags/buffer%E5%92%8Ccash/>Buffer和cash</a>
+<a href=/tags/claude-code/>Claude Code</a>
+<a href=/tags/git/>Git</a>
+<a href=/tags/goroute/>Goroute</a>
+<a href=/tags/go%E5%AE%9E%E7%8E%B0socket%E7%BC%96%E7%A8%8B/>Go实现socket编程</a>
+<a href=/tags/go%E5%BC%82%E5%B8%B8/>Go异常</a>
+<a href=/tags/leetcode/>LeetCode</a>
+<a href=/tags/macos/>MacOS</a>
+<a href=/tags/nginx/>Nginx</a>
+<a href=/tags/rpc/>Rpc</a>
+<a href=/tags/tcp/>Tcp</a>
+<a href=/tags/%E5%8D%95%E9%93%BE%E8%A1%A8%E5%8F%8D%E8%BD%AC/>单链表反转</a>
+<a href=/tags/%E5%B7%A5%E5%85%B7/>工具</a>
+<a href=/tags/%E6%89%BE%E5%AF%B9%E8%B1%A1/>找对象</a>
+<a href=/tags/%E6%95%88%E7%8E%87/>效率</a>
+<a href=/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/>最佳实践</a>
+<a href=/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/>版本控制</a>
+<a href=/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/>环境配置</a>
+<a href=/tags/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/>生活感悟</a>
+<a href=/tags/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/>选择排序</a></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=/index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>

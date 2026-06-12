@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git on Qstudy的博客</title><link>http://dlgde.github.io/tags/git/</link><description>Recent content in Git on Qstudy的博客</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Fri, 12 Jun 2026 10:00:00 +0800</lastBuildDate><atom:link href="http://dlgde.github.io/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Git 常用命令与最佳实践</title><link>http://dlgde.github.io/post/2026/git-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link><pubDate>Fri, 12 Jun 2026 10:00:00 +0800</pubDate><guid>http://dlgde.github.io/post/2026/git-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid><description>&lt;h2 id="引言"&gt;引言&lt;/h2&gt;
+&lt;p&gt;Git 是日常开发中最常用的工具之一，但很多人只停留在 &lt;code&gt;add&lt;/code&gt; / &lt;code&gt;commit&lt;/code&gt; / &lt;code&gt;push&lt;/code&gt; 三步走。这篇文章整理了我日常使用的高频命令、分支管理策略和提交规范, 希望能帮你更高效地使用 Git。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="基础配置"&gt;基础配置&lt;/h2&gt;
+&lt;p&gt;装好 Git 后第一件事——设置用户名和邮箱, 每次提交都会带上这些信息:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global user.name &lt;span style="color:#0a3069"&gt;&amp;#34;Your Name&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global user.email &lt;span style="color:#0a3069"&gt;&amp;#34;your@email.com&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;几个推荐的全局配置:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#57606a"&gt;# 换行符统一为 LF（跨平台协作必备）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global core.autocrlf input
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#57606a"&gt;# 设置默认分支名为 main&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global init.defaultBranch main
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#57606a"&gt;# 使用更直观的冲突标记&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global merge.conflictStyle diff3
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#57606a"&gt;# 彩色输出&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global color.ui auto
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#57606a"&gt;# 别名（高频命令缩短）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global alias.co checkout
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global alias.br branch
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global alias.ci commit
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global alias.st status
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git config --global alias.lg &lt;span style="color:#0a3069"&gt;&amp;#34;log --oneline --graph --all --decorate -20&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="日常高频工作流"&gt;日常高频工作流&lt;/h2&gt;
+&lt;h3 id="拉代码--改代码--提交--推送"&gt;拉代码 → 改代码 → 提交 → 推送&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git pull &lt;span style="color:#57606a"&gt;# 拉最新代码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#57606a"&gt;# ... 改代码 ...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git status &lt;span style="color:#57606a"&gt;# 看改了什么&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git diff &lt;span style="color:#57606a"&gt;# 看具体改动内容&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git add &amp;lt;file&amp;gt; &lt;span style="color:#57606a"&gt;# 暂存&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git commit -m &lt;span style="color:#0a3069"&gt;&amp;#34;xxx&amp;#34;&lt;/span&gt; &lt;span style="color:#57606a"&gt;# 提交&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git push &lt;span style="color:#57606a"&gt;# 推送&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="提交前最后一次审视"&gt;提交前最后一次审视&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;git add&lt;/code&gt; 之后再跑一遍 &lt;code&gt;git diff --staged&lt;/code&gt; 看看将要提交的 diff, 避免把调试代码、临时注释带上去。&lt;/p&gt;</description></item></channel></rss>
