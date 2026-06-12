@@ -81,6 +81,10 @@
 					&lt;td&gt;查看和修改设置&lt;/td&gt;
 			&lt;/tr&gt;
 			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;/resume&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;打开会话选择器，恢复历史对话&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
 					&lt;td&gt;&lt;code&gt;/status&lt;/code&gt;&lt;/td&gt;
 					&lt;td&gt;显示当前项目和会话状态&lt;/td&gt;
 			&lt;/tr&gt;
