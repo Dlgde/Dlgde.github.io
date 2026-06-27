@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>硬件笔记 on Qstudy的博客</title><link>http://dlgde.github.io/categories/%E7%A1%AC%E4%BB%B6%E7%AC%94%E8%AE%B0/</link><description>Recent content in 硬件笔记 on Qstudy的博客</description><generator>Hugo</generator><language>zh-CN</language><lastBuildDate>Sat, 27 Jun 2026 18:30:00 +0800</lastBuildDate><atom:link href="http://dlgde.github.io/categories/%E7%A1%AC%E4%BB%B6%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml"/><item><title>MOSFET 双脉冲测试基础概念理解</title><link>http://dlgde.github.io/post/2026/mosfet-%E5%8F%8C%E8%84%89%E5%86%B2%E6%B5%8B%E8%AF%95-12%E4%B8%AA%E5%BC%80%E5%85%B3%E5%8F%82%E6%95%B0%E6%8C%87%E5%8D%97/</link><pubDate>Sat, 27 Jun 2026 18:30:00 +0800</pubDate><guid>http://dlgde.github.io/post/2026/mosfet-%E5%8F%8C%E8%84%89%E5%86%B2%E6%B5%8B%E8%AF%95-12%E4%B8%AA%E5%BC%80%E5%85%B3%E5%8F%82%E6%95%B0%E6%8C%87%E5%8D%97/</guid><description>&lt;h2 id="第一部分基础概念小白必读"&gt;第一部分：基础概念（小白必读）&lt;/h2&gt;
+&lt;h3 id="mosfet-是什么"&gt;MOSFET 是什么？&lt;/h3&gt;
+&lt;p&gt;MOSFET 就是一个&lt;strong&gt;电子开关&lt;/strong&gt;，像你家里的灯开关，但它用电信号控制。&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;简化结构图：
+ D（漏极）
+ ↓
+ ┌─────┐
+ │ │
+G ─→│ MOS │ ← G 是控制脚，像开关的按钮
+ │ FET │
+ └─────┘
+ ↓
+ S（源极）
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;三个脚的作用：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;D（漏极 Drain）&lt;/strong&gt; — 电流进来的地方（接高电位，比如 +400V）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;S（源极 Source）&lt;/strong&gt; — 电流出去的地方（接低电位，比如 GND）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;G（栅极 Gate）&lt;/strong&gt; — 控制脚，决定 MOSFET 开还是关&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="mosfet-的两个状态"&gt;MOSFET 的两个状态&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;状态 1：关断（OFF）&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;栅极 G 收到负电压 -5V
+ ↓
+MOSFET 就像一个&amp;#34;断开的开关&amp;#34;
+ ↓
+D 和 S 之间几乎没有电流
+VDS = 400V（整个电压加在 MOSFET 上）
+IDS ≈ 0A
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;状态 2：开通（ON）&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;栅极 G 收到高电压 +15V
+ ↓
+MOSFET 就像一个&amp;#34;闭合的开关&amp;#34;
+ ↓
+电流可以从 D 流向 S
+VDS ≈ 0V（管子像一根导线）
+IDS = 13A（或你设置的负载电流）
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="为什么需要测试"&gt;为什么需要测试？&lt;/h3&gt;
+&lt;p&gt;理想的 MOSFET 应该&lt;strong&gt;瞬间&lt;/strong&gt;从关断切换到开通，但实际上：&lt;/p&gt;</description></item></channel></rss>
